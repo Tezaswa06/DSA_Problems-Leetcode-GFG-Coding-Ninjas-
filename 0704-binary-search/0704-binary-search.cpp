@@ -6,14 +6,14 @@ public:
 
          while(start<=end){
              int mid = (start+end)/2;
-             if(nums[mid]<target){
-                 start++;
+             if(nums[mid]==target){
+                 return mid;
              }
-             else if(nums[mid]>target){
-                 end--;
+             else if(nums[mid]<target){
+                 start = mid+1;
              }
              else{
-                 return mid;
+                 end = mid-1;
              }
              
          }  
