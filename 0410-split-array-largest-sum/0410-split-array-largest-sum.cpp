@@ -1,30 +1,40 @@
 class Solution {
 public:
-    bool ispossible(vector<int>& books,int allowedStud,int maxLoad){
-        int currLoad = 0;
-        int requiredStud = 1;
-        for(int pages : books){
-            if(pages > maxLoad){
-                return false;
-            }
-            if(currLoad + pages <= maxLoad){
-                currLoad += pages;
+    bool ispossiblesplit(vector<int>& nums,int allowedsplits,int maxsum){
+        int currsum = 0;
+        int requiredsplit = 1;
+        for(int val : nums){
+            if(currsum + val <= maxsum){
+                currsum += val;
             }
             else{
-                currLoad = pages;
-                requiredStud++;
+                currsum = val;
+                requiredsplit++;
             }
         }
-        return (requiredStud <= allowedStud);
+        return (requiredsplit <= allowedsplits);
     }
-    int splitArray(vector<int>& books, int students) {
-        long left = 0;
-        long right = pow(10,11);
+    long sum(vector<int>& nums){
+        int ans = 0;
+        for(int val : nums){
+            ans += val;
+        }
+        return ans;
+    }
+    long max(vector<int>& nums){
+        int ans = INT_MIN;
+        for(int val : nums){
+            ans = std::max(ans,val);
+        }
+        return ans;
+    }
+    int splitArray(vector<int>& nums, int splits) {
+        long left = max(nums);
+        long right = sum(nums);
         
-        while(left <= right){
+        while(left<=right){
             long mid = left + (right - left)/2;
-            
-            if(ispossible(books,students,mid)==true){
+            if(ispossiblesplit(nums,splits,mid)==true){
                 right = mid - 1;
             }
             else{
@@ -32,6 +42,5 @@ public:
             }
         }
         return left;
-    
     }
 };
