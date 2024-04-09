@@ -10,33 +10,62 @@
  */
 class Solution {
 public:
-    ListNode* removeNthFromEnd(ListNode* head, int n) {
-        ListNode *curr = head;
 
-        int count = 0;
+        // ListNode* removeNthFromEnd(ListNode* head, int n) {
+    //     ListNode *curr = head;
 
-        while(curr != nullptr){
-            curr = curr -> next;
-            count++;
-        }
+    //     int count = 0;
 
-        if(n < 0 || n > count){
-            return head;
-        }
-        curr = head;
-        ListNode *prev = nullptr;
+    //     while(curr != nullptr){
+    //         curr = curr -> next;
+    //         count++;
+    //     }
+
+    //     if(n < 0 || n > count){
+    //         return head;
+    //     }
+    //     curr = head;
+    //     ListNode *prev = nullptr;
         
-        for(int i = 0 ; i < count - n ; i++){
-            prev = curr;
-            curr = curr -> next;
+    //     for(int i = 0 ; i < count - n ; i++){
+    //         prev = curr;
+    //         curr = curr -> next;
+    //     }
+    //     if(prev == nullptr){
+    //         head = head -> next;
+    //         delete curr;
+    //         return head;
+    //     }
+    //     prev -> next = curr -> next;
+    //     delete curr;
+    //     return head;
+    // }
+
+    // Approach 2 single pass 
+
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        ListNode *slow = head;
+        ListNode *fast = head;
+        
+
+        for(int i = 0 ; i < n ; i++){
+            if(fast == nullptr){
+                return 0;
+            }
+            fast = fast -> next;
+        }
+        ListNode *prev = nullptr;
+        while(fast != nullptr){
+            prev = slow;
+            slow = slow -> next;
+            fast = fast -> next;
         }
         if(prev == nullptr){
             head = head -> next;
-            delete curr;
             return head;
         }
-        prev -> next = curr -> next;
-        delete curr;
+        prev -> next = slow -> next;
+        delete slow;
         return head;
     }
 };
