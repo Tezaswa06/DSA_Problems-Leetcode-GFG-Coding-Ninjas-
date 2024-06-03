@@ -27,10 +27,7 @@ public:
         if (left > right) {
             return NULL;
         }
-        if (left == right) {
-            return new TreeNode(preorder[rootidx]);
-        }
-
+        
         TreeNode* root = new TreeNode(preorder[rootidx]);
         int mid = search(preorder[rootidx]);
         root->left = construct(rootidx + 1, left, mid - 1);
