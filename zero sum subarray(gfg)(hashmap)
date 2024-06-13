@@ -1,0 +1,34 @@
+class Solution{
+public:
+
+    //Brute force it will give tle
+    
+    // long long int findSubarray(vector<long long int> &arr, int n ) {
+    //     long long count = 0;
+    //     for(int i=0; i<n; i++){
+    //         long long sum = 0;
+    //         for(int j=i; j<n; j++){
+    //             sum += arr[j];
+    //             if(sum == 0){
+    //                 count++;
+    //             }
+    //         }
+    //     }
+    //     return count;
+        
+    // }
+    
+    
+    long long int findSubarray(vector<long long int> &arr, int n ) {
+        unordered_map<long, long> freq;
+        freq[0] = 1;  // Initialize with a sum of 0 having one occurrence
+        long sum = 0, count = 0;
+
+        for (long val : arr) {
+            sum += val;
+            count += freq[sum];  // Increment count by the number of times `sum` has been seen before
+            freq[sum]++;  // Increment the frequency of the current sum
+        }
+        return count;
+    }
+};
