@@ -1,0 +1,61 @@
+class Graph{
+public:
+    int n;
+    vector<int>* adj;
+    
+    Graph(int n){
+        this -> n = n;
+        adj = new vector<int>[n];
+    }
+    
+    void addEdge(int src, int dest){
+        adj[src].push_back(dest);
+        
+    }
+    
+    int dfs(int src, vector<bool>&vis){
+        if(vis[src] == true){
+            return 0;
+        }
+        vis[src] = true;
+        int size = 1;// finding size of each component
+        for(int nbr : adj[src]){
+            size += dfs(nbr , vis);
+        }
+        return size;
+    }
+};
+class Solution 
+{
+    public:
+	int minSwaps(vector<int>&nums)
+	{
+	    int n = nums.size();
+	    
+	    unordered_map<int, int>oldidx;
+	    for(int i=0; i<n; i++){
+	        oldidx[nums[i]] = i;
+	    }
+	    
+	    sort(nums.begin(), nums.end());
+	    Graph g(n);
+	    
+	    for(int i=0; i<n; i++){
+	        int j = oldidx[nums[i]];
+	        g.addEdge(i , j);
+	    }
+	    
+	    int swaps = 0;
+	    vector<bool>vis(n, false);
+	    
+	    for(int i=0; i<n; i++){
+	        if(vis[i] == true){
+	            continue;
+	        }
+	        
+	        int size = g.dfs(i , vis);
+	        swaps += (size - 1);
+	    }
+	    return swaps;
+	}
+};
