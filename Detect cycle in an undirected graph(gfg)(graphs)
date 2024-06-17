@@ -1,0 +1,28 @@
+class Solution {
+  public:
+    bool DFS(int src, int parent, vector<int> adj[], vector<bool>&vis){
+        if(vis[src] == true){ //if we visited alredy visited node the cycle found
+            return true;
+        }
+        vis[src] = true;
+        for(int nbr : adj[src]){
+            if(nbr == parent){ // matlab agar current node parent ke braabar hai to lot jaao
+                continue;
+            }
+            if(DFS(nbr,src,adj,vis)==true){// here src is denoting as parent
+                return true;
+            }
+        }
+        return false;
+    }
+    bool isCycle(int V, vector<int> adj[]) {
+        vector<bool>vis(V,false);
+        
+        for(int i=0; i<V; i++){// this for loop we have created to handle multiple components
+            if(vis[i] == false && DFS(i,-1,adj,vis) == true){
+                return true;
+            }
+        }
+        return false;
+    }
+};
