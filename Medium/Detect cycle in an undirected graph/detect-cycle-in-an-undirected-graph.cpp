@@ -3,6 +3,8 @@
 using namespace std;
 
 // } Driver Code Ends
+
+// dfs
 class Solution {
   public:
     bool DFS(int src, int parent, vector<int> adj[], vector<bool>&vis){
@@ -31,6 +33,52 @@ class Solution {
         return false;
     }
 };
+// bfs
+class Solution {
+  public:
+    struct Pair{
+        int src;
+        int parent;
+        
+        Pair(int src,int parent){
+            this -> src = src;
+            this -> parent = parent;
+        }
+    };
+    bool BFS(int src,vector<int> adj[],vector<bool>& vis){
+        queue<Pair>q;
+        q.push(Pair(src, -1));
+        
+        while(q.size() > 0){
+            Pair p = q.front();
+            q.pop();
+            
+            if(vis[p.src] == true){
+                return true;
+            }
+            vis[p.src] = true;
+            
+            for(int nbr : adj[p.src]){
+                if(nbr == p.parent){
+                    continue;
+                }
+                q.push(Pair(nbr,p.src));
+            }
+        }
+        return false;
+    }
+    bool isCycle(int V, vector<int> adj[]) {
+        vector<bool>vis(V,false);
+        
+        for(int i=0; i<V; i++){
+            if(vis[i] == false && BFS(i,adj,vis) == true){
+                return true;
+            }
+        }
+        return false;
+    }
+};
+
 
 //{ Driver Code Starts.
 int main() {
