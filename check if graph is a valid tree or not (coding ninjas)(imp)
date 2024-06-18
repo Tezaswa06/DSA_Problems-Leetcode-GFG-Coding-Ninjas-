@@ -1,0 +1,73 @@
+#include <bits/stdc++.h>
+class Graph{
+    public:
+
+    int n;
+    vector<int>* adj;
+
+    Graph(int n){
+        this -> n = n;
+        adj = new vector<int>[n];
+    }
+
+    void addEdge(int src, int dest){
+        adj[src].push_back(dest);
+        adj[dest].push_back(src);
+    }
+
+    void dfs(int src, vector<bool>&vis){
+        if(vis[src] == true){
+            return ;
+        }
+        vis[src] = true;
+        for(int nbr : adj[src]){
+            dfs(nbr,vis);
+        }
+    }
+    bool dfscycle(int src,int parent,vector<bool>& visited){
+        if(visited[src] == true){
+            return true;
+        }
+        visited[src] = true;
+        for(int nbr : adj[src]){
+            if(nbr == parent){
+                continue;
+            }
+            if(dfscycle(nbr,src,visited) == true){
+                return true;
+            }
+        }
+        return false;
+    }
+};
+bool checkgraph(vector<vector<int>> edges, int n, int m)
+{
+    vector<bool>vis(n,false);
+
+    Graph g(n);
+
+    for(const vector<int>edge : edges){
+        g.addEdge(edge[0], edge[1]);
+    }
+
+    int components = 0;
+    for(int i=0; i<n; i++){  
+        if(vis[i] == true){
+            continue;
+        }
+        g.dfs(i,vis);
+        components++;
+    }
+
+    if(components > 1){
+        return false;
+    }
+
+    vector<bool>visited(n,false);
+    for(int i=0; i<n; i++){
+        if(visited[i] == false && g.dfscycle(i,-1,visited) == true){
+            return false;
+        }
+    }
+    return true;
+}
