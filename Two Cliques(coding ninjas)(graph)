@@ -1,0 +1,61 @@
+#include <bits/stdc++.h>
+class Graph{
+public:
+    int n;
+    vector<int>* adj;
+
+    Graph(int n){
+        this -> n = n;
+        adj = new vector<int>[n];
+    }
+
+    void addEdge(int src, int dest){
+        adj[src].push_back(dest);
+        adj[dest].push_back(src);
+    }
+    bool dfs(int src,int color, vector<int>& vis){
+        if(vis[src] != -1){
+            if(vis[src] == color){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        
+        vis[src] = color;
+        for(int nbr : adj[src]){
+            if(dfs(nbr,1 - color,vis) == false){
+                return false;
+            }
+        }
+        return true;
+    }
+};
+bool twoCliques(int n, vector<vector<int>> &edgeList)
+{
+	vector<vector<bool>>mat(n,vector<bool>(n,false));
+    for(const vector<int>edge : edgeList){
+        mat[edge[0]][edge[1]] = true;
+        mat[edge[1]][edge[0]] = true;
+    }
+
+    Graph rev(n);
+    for(int i=0; i<n; i++){
+        for(int j=0; j<n; j++){
+            if(i != j && mat[i][j] == false){
+                rev.addEdge(i,j);
+            }
+        }
+    }
+    vector<int>vis(n,-1);
+    for(int i=0; i<n; i++){
+        if(vis[i] != -1){
+            continue;
+        }
+        if(rev.dfs(i,0,vis) == false){
+            return false;
+        }
+    }
+    return true;
+}
