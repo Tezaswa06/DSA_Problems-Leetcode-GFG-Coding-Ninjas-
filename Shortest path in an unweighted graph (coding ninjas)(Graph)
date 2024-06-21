@@ -1,0 +1,71 @@
+#include<bits/stdc++.h>
+class Graph{
+public:
+    int n;
+    vector<int>* adj;
+
+    Graph(int n){
+        this -> n = n;
+        adj = new vector<int>[n];
+    }
+
+    void addEdge(int src, int dest){
+        adj[src].push_back(dest);
+        adj[dest].push_back(src);
+    }
+
+    struct Pair{
+        int src;
+        int dist;
+        int parent;
+
+        Pair(int src,int dist,int parent){
+            this -> src = src;
+            this -> dist = dist;
+            this -> parent = parent;
+        }
+        
+    };
+
+    vector<int> BFS(int src, int dest){
+        vector<int>dist(n,INT_MAX);
+        vector<int>parent(n);
+
+        queue<Pair>q;
+        q.push(Pair(src,0,-1));//0 denoting current distnace and -1 denoting parent of the src
+
+        while(q.size() > 0){
+            Pair p = q.front();
+            q.pop();
+            if(dist[p.src] < INT_MAX){
+                continue;
+            }
+            dist[p.src] = p.dist;
+            parent[p.src] = p.parent;
+
+            if(src == dest){
+                break;
+            }
+            for(int nbr : adj[p.src]){
+                q.push(Pair(nbr,1 + p.dist,p.src));
+            }
+        }
+
+        vector<int>path;
+        int curr = dest;
+        while(curr != -1){
+            path.push_back(curr);
+            curr = parent[curr];
+        }
+        reverse(path.begin(),path.end());
+        return path;
+    }
+};
+vector<int> shortestPath( vector<pair<int,int>> edges , int n , int m, int s , int t){
+	Graph g(n + 1);
+    for(const pair<int,int>edge : edges){
+        g.addEdge(edge.first,edge.second);
+    }
+    return g.BFS(s,t);
+
+}
