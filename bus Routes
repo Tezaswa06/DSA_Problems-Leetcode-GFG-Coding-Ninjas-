@@ -1,0 +1,71 @@
+
+struct Pair {
+    int stop;
+    int color;
+    int changes;
+
+    Pair(int stop, int color, int changes) {
+        this->stop = stop;
+        this->color = color;
+        this->changes = changes;
+    }
+
+    bool operator<(const Pair& other) const {
+        return this->changes > other.changes;
+    }
+};
+
+class Solution {
+public:
+    int numBusesToDestination(vector<vector<int>>& routes, int source, int target) {
+        if (source == target) {
+            return 0;
+        }
+
+        int n = 0;
+        for (const auto& route : routes) {
+            for (int stop : route) {
+                n = max(n, stop);
+            }
+        }
+
+        vector<vector<Pair>> adj(n + 1);
+        for (int i = 0; i < routes.size(); ++i) {
+            for (int j = 0; j < routes[i].size(); ++j) {
+                int src = routes[i][j];
+                int dest = routes[i][(j + 1) % routes[i].size()];
+
+                adj[src].emplace_back(dest, i, 0);
+                adj[dest].emplace_back(src, i, 0);
+            }
+        }
+
+        priority_queue<Pair> q;
+        q.emplace(source, routes.size(), 0);
+
+        vector<vector<int>> vis(n + 1, vector<int>(routes.size() + 1, -1));
+
+        while (!q.empty()) {
+            Pair top = q.top();
+            q.pop();
+            if (top.stop == target) {
+                return top.changes;
+            }
+
+            if (vis[top.stop][top.color] != -1) {
+                continue;
+            }
+            vis[top.stop][top.color] = top.changes;
+
+            for (const Pair& nbr : adj[top.stop]) {
+                if (top.color == nbr.color) {
+                    q.emplace(nbr.stop, nbr.color, top.changes);
+                } else {
+                    q.emplace(nbr.stop, nbr.color, top.changes + 1);
+                }
+            }
+        }
+
+        return -1;
+    }
+};
