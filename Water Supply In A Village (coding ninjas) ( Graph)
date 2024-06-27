@@ -1,0 +1,50 @@
+#include<bits/stdc++.h>
+struct Pair{
+    int node;
+    int weight;
+    Pair(int node, int weight){
+        this -> node = node;
+        this -> weight = weight;
+    }
+};
+class Compare{
+    public:
+
+    bool operator()(Pair a, Pair b){
+        return a.weight > b.weight;
+    }
+};
+int supplyWater(int n, int k, vector<int> &wells, vector<vector<int>> &pipes) {
+    
+    vector<vector<Pair>>adj(n + 1);
+
+    for(auto pipe : pipes){
+        adj[pipe[0]].push_back(Pair(pipe[1],pipe[2]));
+        adj[pipe[1]].push_back(Pair(pipe[0],pipe[2]));
+    }
+
+    for(int i=0; i<n; i++){
+        adj[0].push_back(Pair(i + 1, wells[i]));// i+1 denotes the node to which the well node will get connected and
+        adj[i + 1].push_back(Pair(0,wells[i]));// wells[i] denotes the edge weight between node which we have connected with well
+    }
+
+    priority_queue<Pair,vector<Pair>,Compare>q;
+    q.push(Pair(0,0));
+    vector<bool>vis(n + 1);
+    int cost = 0;
+    while(q.size() > 0){
+        Pair p = q.top();
+        q.pop();
+
+        if(vis[p.node] == true){
+            continue;
+        }
+        vis[p.node] = true;
+        cost += p.weight;
+
+        for(Pair nbr : adj[p.node]){
+            q.push(Pair(nbr.node,nbr.weight));
+        }
+    }
+    return cost;
+}
