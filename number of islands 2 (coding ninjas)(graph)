@@ -1,0 +1,73 @@
+class DSU{
+    public:
+
+    vector<int>parent;
+    vector<int>rank;
+
+    DSU(int n){
+        parent.resize(n, -1);
+        rank.resize(n,1);
+    }
+
+    void union_set(int a, int b){
+        int pa = findpar(a);
+        int pb = findpar(b);
+        if(pa == pb){
+            return;
+        }
+        if(rank[pa] > rank[pb]){
+            parent[pa] = pb;
+            rank[pa] += rank[pb];
+        }
+        else{
+            parent[pb] = pa;
+            rank[pb] += rank[pa];
+        }
+    }
+    int findpar(int a){
+        if(parent[a] == -1){
+            return a;
+        }
+        return parent[a] = findpar(parent[a]);
+    }
+};
+
+vector<int> dr = {0,0,1,-1};
+vector<int> dc = {1,-1,0,0};
+
+vector<int> numOfIslandsII(int rows, int cols, vector<vector<int>> &queries){
+    DSU sets(rows * cols);
+
+    vector<int>ans(queries.size());
+    vector<bool>vis(rows*cols + 1);
+    int islands = 0;
+
+    for(int i=0; i<queries.size(); i++){
+        int r = queries[i][0];
+        int c = queries[i][1];
+        int idx = r * cols + c;
+
+        if(vis[idx] == true){// cell is already a land
+            ans[idx] = islands;
+            continue;
+        }
+        vis[idx] = true;// marked cell as land
+        islands++;
+        for(int d=0; d<4; d++){
+            int nr = r + dr[d];
+            int nc = c + dc[d];
+            int newidx = nr * cols + nc;
+
+            if(nr < 0 || nc < 0 || nr >= rows || nc >= cols || vis[newidx] == false){
+                continue;// out of matrix or neighbour is water then skip
+            }
+            if(sets.findpar(newidx) == sets.findpar(idx)){
+                continue;// cycle or already in same island
+            }
+            sets.union_set(idx,newidx);
+            islands--;
+        }
+        ans[i] = islands;
+    }
+    return ans;
+}
