@@ -1,0 +1,56 @@
+#include <bits/stdc++.h> 
+// memoization
+
+// int memo(vector<vector<int>>& costs,int idx,int prev,int k,vector<vector<int>>& dp){
+//    if(idx == costs.size()){
+//       return 0;
+//    }
+//    if(prev >= 0 && dp[idx][prev] != -1){
+//       return dp[idx][prev];
+//    }
+//    int min1 = INT_MAX;
+//    for(int color=0; color<k; color++){
+//       min1 = min(min1 , (prev == color) ? INT_MAX : memo(costs,idx+1,color,k,dp) + costs[idx][color]);
+//    }
+//    if(prev == -1){
+//       return min1;
+//    }
+//    return dp[idx][prev] = min1;
+// }
+// int paintCost(int n, int k, vector<vector<int>> &costs)
+// {  
+//    if(n == 0){
+//       return 0;
+//    }
+//    vector<vector<int>>dp(n+1,vector<int>(k,-1));
+//    return memo(costs,0,-1,k,dp);
+// }
+
+// tabulation
+
+// int paintCost(int n, int k, vector<vector<int>> &costs)
+// {
+//    vector<vector<int>>dp(n+1,vector<int>(k));
+//    for(int c=0; c<k; c++){
+//       dp[0][c] = costs[0][c];
+//    }
+
+//    for(int i=1; i<n; i++){
+//       for(int c=0; c<k; c++){
+//          int min1 = INT_MAX;
+//          for(int prev=0; prev<k; prev++){
+//             if(prev == c){
+//                continue;
+//             }
+//             min1 = min(min1,dp[i-1][prev]);
+//          }
+//          dp[i][c] = costs[i][c] + min1;
+//       }
+//    }
+
+//    int min1 = INT_MAX;
+//    for(int c=0; c<k; c++){
+//       min1 = min(min1,dp[n-1][c]);
+//    }
+//    return min1;
+// }
