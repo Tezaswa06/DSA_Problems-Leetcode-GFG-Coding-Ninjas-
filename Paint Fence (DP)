@@ -1,0 +1,63 @@
+// memoization
+
+// class Solution{
+//     public:
+//     long long mod = 1000000007;
+    
+//     long long memo(long long n,long long k,vector<long long>& dp){
+//         if(n == 1){
+//             return k;
+//         }
+//         if(n == 2){
+//             return k*k;
+//         }
+//         if(dp[n] != -1){
+//             return dp[n];
+//         }
+//         long long ans = ((memo(n-1,k,dp) + memo(n-2,k,dp))*(k-1))% mod;
+        
+//         return dp[n] = ans;
+//     }
+//     long long countWays(int n, int k)    {
+//         if(n == 1){
+//             return k;
+//         }
+//         if(n == 2){
+//             return k*k;
+//         }
+//         if(k == 1){
+//             return 0;
+//         }
+//         vector<long long>dp(n+1,-1);
+//         return memo(n,k,dp);
+//     }
+// };
+
+class Solution{
+    public:
+    long long mod = 1000000007; 
+    
+    long long countWays(long long n, long long k){
+        if(n == 1){
+            return k;
+        }
+        if(n == 2){
+            return k*k;
+        }
+        if(k == 1){
+            return 0;
+        }
+        
+        vector<long long>same(n+1);
+        vector<long long>diff(n+1);
+        
+        same[2] = k;
+        diff[2] = (k * (k-1))%mod;
+        
+        for(long long i=3; i<=n; i++){
+            same[i] = diff[i-1];
+            diff[i] = ((same[i-1] + diff[i-1]) * (k-1)) % mod;
+        }
+        return (same[n] + diff[n]) % mod;
+    }
+};
