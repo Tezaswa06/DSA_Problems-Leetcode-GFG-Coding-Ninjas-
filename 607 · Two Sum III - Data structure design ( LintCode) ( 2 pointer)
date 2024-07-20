@@ -1,0 +1,35 @@
+class TwoSum {
+public:
+    vector<int>data;
+    bool isSorted;
+    TwoSum(){
+        data;
+        isSorted = true;
+    }
+    void add(int number) {
+        data.push_back(number);
+        isSorted = false;
+    }
+
+    bool find(int value) {
+        if(isSorted == false){
+            sort(data.begin(),data.end());
+            isSorted = true;
+        }   
+        int left = 0;
+        int right = data.size()-1;
+        while(left < right){
+            int sum = data[left] + data[right];
+            if(sum == value){
+                return true;
+            }
+            if(sum < value){
+                left++;
+            }
+            else{
+                right--;
+            }
+        }
+        return false;
+    }
+};
