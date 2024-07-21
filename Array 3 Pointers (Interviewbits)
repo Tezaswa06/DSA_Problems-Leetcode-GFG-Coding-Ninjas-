@@ -1,0 +1,24 @@
+int Solution::minimize(const vector<int> &A, const vector<int> &B, const vector<int> &C) {
+    int i=0;
+    int j=0;
+    int k=0;
+    int ans = INT_MAX;
+    
+    while(i < A.size() && j < B.size() && k < C.size()){
+        int a = abs(A[i] - B[j]);
+        int b = abs(A[i] - C[k]);
+        int c = abs(B[j] - C[k]);
+        
+        ans = min(ans,max(a,max(b,c)));
+        if(A[i] <= B[j] && A[i] <= C[k]){
+            i++;
+        }
+        else if(B[j] <= A[i] && B[j] <= C[k]){
+            j++;
+        }
+        else{
+            k++;
+        }
+    }
+    return ans;
+}
