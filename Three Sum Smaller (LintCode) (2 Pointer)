@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int twoSumSmaller(vector<int>& nums,int left,int target){
+        int right = nums.size() - 1;
+        int count = 0;
+
+        while(left < right){
+            int sum = nums[left] + nums[right];
+            if(sum < target){
+                count += right - left;
+                left++;
+            }
+            else{
+                right--;
+            }
+        }
+        return count;
+    }
+    int threeSumSmaller(vector<int> &nums, int target) {
+        sort(nums.begin(),nums.end());
+        int ans = 0;
+
+        for(int first=0; first<nums.size(); first++){
+            ans += twoSumSmaller(nums,first+1,target-nums[first]);    
+        }
+        return ans;
+    }
+};
