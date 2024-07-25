@@ -1,0 +1,25 @@
+// in this question we want distinct elelemnts for each window
+
+vector<int> Solution::dNums(vector<int> &A, int B) {
+    int n = A.size();
+    vector<int>res(n - B + 1);
+    unordered_map<int,int>freq;
+    
+    for(int i=0; i<B; i++){
+        freq[A[i]]++;
+    }
+    int window = 0;
+    res[window++] = freq.size();
+    
+    for(int i=B; i<n; i++){
+        freq[A[i]]++;
+        if(freq[A[i-B]] == 1){
+            freq.erase(A[i-B]);
+        }
+        else{
+            freq[A[i-B]]--;
+        }
+        res[window++] = freq.size();
+    }
+    return res;
+}
