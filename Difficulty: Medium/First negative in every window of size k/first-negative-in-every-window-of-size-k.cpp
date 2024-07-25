@@ -35,19 +35,19 @@ vector<long long> printFirstNegativeInteger(long long int A[],long long int N, l
     deque<long long>q;
     for(long long i=0; i<K; i++){
         if(A[i] < 0){
-            q.push_back(i);
+            q.push_back(A[i]);
         }
     }
     long long window = 0;
-    res[window++] = (q.size() == 0) ? 0 : A[q.front()];
+    res[window++] = (q.size() == 0) ? 0 : q.front();
     for(long long i=K; i<N; i++){
-        if(q.size() > 0 && q.front() <= i-K){// agar q.front ka current index bahar jaa rha hoga
+        if(q.size() > 0 && A[i-K] < 0){// agar q.front ka current index se bahar jaa rha hoga to pop kar denge
             q.pop_front();
         }
         if(A[i] < 0){// if negative
-            q.push_back(i);
+            q.push_back(A[i]);
         }
-        res[window++] = (q.size() == 0) ? 0 : A[q.front()];
+        res[window++] = (q.size() == 0) ? 0 : q.front();
     }
     return res;
  }
