@@ -1,0 +1,13 @@
+int Solution::solve(vector<int> &A, int B) {
+    set<int>vis;
+    for(int val : A){
+        vis.insert(val);
+    }
+    int pairs = 0;
+    for(int val : A){
+        if(vis.find(val ^ B) != vis.end()){
+            pairs++;
+        }
+    }
+    return pairs/2;
+}
