@@ -1,0 +1,33 @@
+// custom sorting using lambda expressions
+class Solution
+{
+    static class Student{
+        int phy,chem,maths;
+        Student(int phy,int chem,int maths){
+            this.phy = phy;
+            this.chem = chem;
+            this.maths = maths;
+        }
+    }
+    public void customSort (int phy[], int chem[], int math[], int N)
+    {
+        Student[] stud = new Student[N];
+        for(int i=0; i<N; i++){
+            stud[i] = new Student(phy[i],chem[i],math[i]);
+        }
+        Arrays.sort(stud, (a,b) -> {
+            if(a.phy != b.phy)
+                return a.phy - b.phy;// Increasing order of physics
+            
+            if(a.chem != b.chem)
+                return b.chem - a.chem;// same in physice and decreasing order of chemistry
+            
+            return a.maths - b.maths;// same in phy and chem increasing order in maths
+        });
+        for(int i=0; i<N; i++){
+            phy[i] = stud[i].phy;
+            chem[i] = stud[i].chem;
+            math[i] = stud[i].maths;
+        }
+    }
+}
